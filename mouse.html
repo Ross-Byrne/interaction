@@ -22,15 +22,19 @@
 
       // Gets a handle to the element with id canvasOne.
       var canvas = document.getElementById("canvas-for-ball");
+		 
       // Get a 2D context for the canvas.
       var ctx = canvas.getContext("2d");
+		 
       // Make the fill style red.
       ctx.fillStyle = "rgb(255, 0, 0)";
       
       canvas.addEventListener("click", function(event) { 
         console.log(event);
         ctx.beginPath();
-        ctx.arc(50, 50, 10, 0, 2 * Math.PI);
+			
+			// draws circle where user clicks and accounts for canvas border offSet
+        ctx.arc(event.clientX - canvas.offsetTop, event.clientY - canvas.offsetLeft, 10, 0, 2 * Math.PI); 
         ctx.fill();
       });
 
