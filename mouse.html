@@ -19,6 +19,8 @@
     <canvas id="canvas-for-ball"></canvas>
 
     <script type="text/javascript">
+		 
+		 var count = 0;
 
       // Gets a handle to the element with id canvasOne.
       var canvas = document.getElementById("canvas-for-ball");
@@ -30,12 +32,31 @@
       ctx.fillStyle = "rgb(255, 0, 0)";
       
       canvas.addEventListener("click", function(event) { 
+			
         console.log(event);
+			
         ctx.beginPath();
+			
+			if((count % 2) > 0){
+				
+				// Make the fill style red.
+      	ctx.fillStyle = "rgb(255, 0, 0)";
+				
+				count -= 1;
+				
+			} else {
+				
+				// Make the fill style red.
+      	ctx.fillStyle = "rgb(0, 0, 255)";
+				
+				count += 1;
+				
+			} // if
 			
 			// draws circle where user clicks and accounts for canvas border offSet
         ctx.arc(event.clientX - canvas.offsetTop, event.clientY - canvas.offsetLeft, 10, 0, 2 * Math.PI); 
         ctx.fill();
+			
       });
 
     </script>
