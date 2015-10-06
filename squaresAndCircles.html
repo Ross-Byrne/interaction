@@ -174,9 +174,7 @@
 		// checks for mouse clicks
       canvas.addEventListener("click", function(event) { 
 			
-        console.log(event);
-			
-			console.log("mousex: " + (event.clientX - canvas.offsetTop));
+        //console.log(event);
 			
 			// loop through array of grid coords
 			for(var i = 0; i < board.boardGridCoords.length; i++){
@@ -185,28 +183,33 @@
 			if(checkIfInGrid(event.clientX - canvas.offsetTop, event.clientY -canvas.offsetLeft, 
 								  board.boardGridCoords[i].x, board.boardGridCoords[i].y)) { // if valid grid box
 				
-				if((count % 2) > 0){
+				if((count % 2) > 0){ // if count is uneven
 				
-				circle.draw(board.boardGridCoords[i].x + (board.gridBoxSize.width / 2), 
+					// draw the circle
+					circle.draw(board.boardGridCoords[i].x + (board.gridBoxSize.width / 2), 
 								board.boardGridCoords[i].y + (board.gridBoxSize.height / 2));
 				
-				count -= 1;
+					// sets count back to 0
+					count -= 1;
 				
-			} else {
+				} else { // if count is even
 				
-				square.draw(board.boardGridCoords[i].x + (board.gridBoxSize.width / 2) - (square.width / 2), 
+					// draw the square
+					square.draw(board.boardGridCoords[i].x + (board.gridBoxSize.width / 2) - (square.width / 2), 
 								board.boardGridCoords[i].y + (board.gridBoxSize.height / 2) - (square.height / 2));
 				
-				count += 1;
+					// adds 1 to count
+					count += 1;
+					
+				} // if
 				
-			} // if
+				// delete x and y of grid so a circle or square can't be reprinted in it
+				board.boardGridCoords[i].x = 0;
+				board.boardGridCoords[i].y = 0;
 				
 			} // if
 
-		 }
-			
-			
-			
+		 } // for
 			
       });
 
