@@ -33,16 +33,19 @@
 			 // controls where on the canvas the board is placed
 			 ,startPosition: { x: 0, y: 0}
 			 
+			 // position coords for the current grid square being printed to screen
 			 ,position: { x: 0, y: 0}
 			 
 			 // function to draw the board based on its variables
 			 ,draw: function(){
 				 
+				 // set the position.y of the first box to the starting y position 
 				 this.position.y = this.startPosition.y;
 				 
 				 // loop through each row
 				 for(var i = 0; i < this.size.height; i++){
 					 
+					 // reset the poistion.x to the starting x position
 					 this.position.x = this.startPosition.x;
 					 
 					 // loop through each column in current row
@@ -51,19 +54,24 @@
 						 // draw
 				 		ctx.strokeRect(this.position.x, this.position.y, this.gridBoxSize.width, this.gridBoxSize.height);
 						 
-						this.position.x += this.gridBoxSize.width;
+						 // track grids x and y pos
+						 this.boardGridCoords.push({x: this.position.x, y: this.position.y});
 						 
-						 console.log("position.x: " + this.position.x)
-						 console.log("position.y: " + this.position.y)
-						
+						// increment the x position to set the position for the next box to be placed
+						this.position.x += this.gridBoxSize.width;						
 		
 					 } // for
 					 
+					 // after a row of boxes is printed to screen, increase the y position to set the 
+					 // position of the next row
 					 this.position.y += this.gridBoxSize.height;
 					 
 				 } // for
 				 
 			 } // draw()
+			 
+			 // array to keep track of x and y positions of each grid square
+			 ,boardGridCoords: [{}]
 			 
 		 }; // board object
 		 
@@ -131,8 +139,8 @@
 		 square.width = 20;
 		 square.height = 20;
 		 
-		 board.size.height = 5;
-		 board.size.width = 5;
+		 board.size.height = 3;
+		 board.size.width = 3;
 		 
 		 board.gridBoxSize.height = 50;
 		 board.gridBoxSize.width = 50;
@@ -141,26 +149,63 @@
 		 board.startPosition.x = (canvas.width / 2) - (board.size.width * board.gridBoxSize.width / 2);
 		 board.startPosition.y = (canvas.height / 2) - (board.size.height * board.gridBoxSize.height / 2);
 		 
+		 // functions
+		 
+		 function checkIfInGrid(mouseX, mouseY, gridX, gridY){
+			 
+			 var isInGrid = false;
+			 
+			 // checks to see if point clicked is in the specified grid square
+			 if(mouseX > gridX && mouseX < (gridX + board.gridBoxSize.width)
+				&& mouseY > gridY && mouseY < (gridY + board.gridBoxSize.height)){
+				 
+				 isInGrid = true;
+			 } else {
+				 
+				 isInGrid = false;
+			 }  // if
+			 
+			 return isInGrid;
+		 } // checkIfInGrid()
+		 
 		 // draw the game board
 		 board.draw();
       
+		// checks for mouse clicks
       canvas.addEventListener("click", function(event) { 
 			
         console.log(event);
 			
-			if((count % 2) > 0){
+			console.log("mousex: " + (event.clientX - canvas.offsetTop));
+			
+			// loop through array of grid coords
+			for(var i = 0; i < board.boardGridCoords.length; i++){
+			 
+			// check to see if where user clicked is inside a valid grid
+			if(checkIfInGrid(event.clientX - canvas.offsetTop, event.clientY -canvas.offsetLeft, 
+								  board.boardGridCoords[i].x, board.boardGridCoords[i].y)) { // if valid grid box
 				
-				circle.draw(50, 50);
+				if((count % 2) > 0){
+				
+				circle.draw(board.boardGridCoords[i].x + (board.gridBoxSize.width / 2), 
+								board.boardGridCoords[i].y + (board.gridBoxSize.height / 2));
 				
 				count -= 1;
 				
 			} else {
 				
-				square.draw(100, 100);
+				square.draw(board.boardGridCoords[i].x + (board.gridBoxSize.width / 2) - (square.width / 2), 
+								board.boardGridCoords[i].y + (board.gridBoxSize.height / 2) - (square.height / 2));
 				
 				count += 1;
 				
 			} // if
+				
+			} // if
+
+		 }
+			
+			
 			
 			
       });
