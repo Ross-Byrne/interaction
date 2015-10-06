@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Canvas</title>
+
+    <style type="text/css">
+      canvas {
+        border: 1px solid grey; 
+      }
+    </style>
+
+  </head>
+
+  <body>
+
+    <canvas id="squaresAndCirclesCanvas"></canvas>
+
+    <script type="text/javascript">
+		 
+		 // Objects
+		 
+		 var board = {
+			 
+			 
+			 
+		 }; // board object
+		 
+		 var square = {
+			
+			 width: 0
+			 ,height: 0
+			 ,position: { x: 0, y: 0}
+			 
+			 // function to draw square to specified x, y pos
+			 , draw: function(xPos, yPos){
+				 
+				 // set x and y
+				 this.position.x = xPos;
+				 this.position.y = yPos;
+				 
+				 // set colour for square
+				 ctx.fillStyle = "rgb(0, 255, 0)";
+
+				 // draw
+				 ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
+				 
+			 } // draw()
+			 
+		 }; // square object
+		 
+		 var circle = {
+			 
+		 	radius: 10
+		 	,position: { x: 0, y: 0 }
+			 
+			 // function to draw circle to specified x, y pos
+			,draw: function(xPos, yPos) {
+			 
+				// set x and y
+				this.position.x = xPos;
+				this.position.y = yPos;
+			 
+				// Make the fill style red.
+      		ctx.fillStyle = "rgb(255, 0, 0)";
+			 
+				ctx.beginPath();
+				
+				// draws circle 
+				ctx.arc(this.position.x, this.position.y, this.radius, 0, 2 * Math.PI); 
+			 
+			 	// fill circles colour
+        		ctx.fill();
+			 
+		 	} // draw()
+		 
+		 }; // circle object
+		 
+		 var count = 0;
+		 
+		 // initialise vars
+		 circle.radius = 10;
+		 square.width = 20;
+		 square.height = 20;
+
+      // Gets a handle to the element with id canvasOne.
+      var canvas = document.getElementById("squaresAndCirclesCanvas");
+		 
+      // Get a 2D context for the canvas.
+      var ctx = canvas.getContext("2d");
+      
+      canvas.addEventListener("click", function(event) { 
+			
+        console.log(event);
+			
+			if((count % 2) > 0){
+				
+				circle.draw(50, 50);
+				
+				count -= 1;
+				
+			} else {
+				
+				square.draw(100, 100);
+				
+				count += 1;
+				
+			} // if
+			
+			
+      });
+
+    </script>
+
+  </body>
+
+</html>
