@@ -16,7 +16,7 @@
 
   <body>
 
-    <canvas id="squaresAndCirclesCanvas"></canvas>
+    <canvas id="squaresAndCirclesCanvas" width="500" height="500"></canvas>
 
     <script type="text/javascript">
 		 
@@ -24,7 +24,46 @@
 		 
 		 var board = {
 			 
+			 // controls how big the board is eg 4 squares by 5 squares
+			 size: { width: 0, height: 0}
 			 
+			 // controls the width and height of each individual grid square
+			 ,gridBoxSize: { width: 0, height: 0}
+			 
+			 // controls where on the canvas the board is placed
+			 ,startPosition: { x: 0, y: 0}
+			 
+			 ,position: { x: 0, y: 0}
+			 
+			 // function to draw the board based on its variables
+			 ,draw: function(){
+				 
+				 this.position.y = this.startPosition.y;
+				 
+				 // loop through each row
+				 for(var i = 0; i < this.size.height; i++){
+					 
+					 this.position.x = this.startPosition.x;
+					 
+					 // loop through each column in current row
+					 for(var j = 0; j < this.size.width; j++){
+						 
+						 // draw
+				 		ctx.strokeRect(this.position.x, this.position.y, this.gridBoxSize.width, this.gridBoxSize.height);
+						 
+						this.position.x += this.gridBoxSize.width;
+						 
+						 console.log("position.x: " + this.position.x)
+						 console.log("position.y: " + this.position.y)
+						
+		
+					 } // for
+					 
+					 this.position.y += this.gridBoxSize.height;
+					 
+				 } // for
+				 
+			 } // draw()
 			 
 		 }; // board object
 		 
@@ -77,19 +116,33 @@
 		 	} // draw()
 		 
 		 }; // circle object
-		 
-		 var count = 0;
-		 
-		 // initialise vars
-		 circle.radius = 10;
-		 square.width = 20;
-		 square.height = 20;
 
       // Gets a handle to the element with id canvasOne.
       var canvas = document.getElementById("squaresAndCirclesCanvas");
 		 
       // Get a 2D context for the canvas.
       var ctx = canvas.getContext("2d");
+		 
+		 // initialise vars
+		 
+		 var count = 0;
+		 
+		 circle.radius = 10;
+		 square.width = 20;
+		 square.height = 20;
+		 
+		 board.size.height = 5;
+		 board.size.width = 5;
+		 
+		 board.gridBoxSize.height = 50;
+		 board.gridBoxSize.width = 50;
+		 
+		 // to place board in center of canvas, get center of canvas - the center of the board
+		 board.startPosition.x = (canvas.width / 2) - (board.size.width * board.gridBoxSize.width / 2);
+		 board.startPosition.y = (canvas.height / 2) - (board.size.height * board.gridBoxSize.height / 2);
+		 
+		 // draw the game board
+		 board.draw();
       
       canvas.addEventListener("click", function(event) { 
 			
